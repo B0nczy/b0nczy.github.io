@@ -15,21 +15,45 @@
       justify-content: center;
       color: red;
       font-family: Arial, Helvetica, sans-serif;
-      font-size: 2.5rem; /* slightly smaller text */
+      font-size: 2.5rem;
       text-shadow: 0 0 10px red;
       text-align: center;
     }
 
     img {
-      max-height: 40vh; /* image won't exceed 40% of the screen height */
+      max-height: 40vh;
       width: auto;
       margin-top: 20px;
       border-radius: 10px;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    img:hover {
+      transform: scale(1.1);
     }
   </style>
 </head>
 <body>
   get mogged vro
-  <img src="WhatsApp Image 2025-08-01 at 17.08.50_657c92eb.jpg" alt="image with 'get mogged vro'">
+
+  <img
+    id="mogImage"
+    src="WhatsApp Image 2025-08-01 at 17.08.50_657c92eb.jpg"
+    alt="image with 'get mogged vro'"
+  >
+
+  <!-- Hidden audio element -->
+  <audio id="mogSound" src="mogged.mp3"></audio>
+
+  <script>
+    const image = document.getElementById('mogImage');
+    const sound = document.getElementById('mogSound');
+
+    image.addEventListener('click', () => {
+      sound.currentTime = 0; // Rewind to start
+      sound.play();
+    });
+  </script>
 </body>
 </html>
