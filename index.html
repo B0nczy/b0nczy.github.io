@@ -1,7 +1,91 @@
 <!DOCTYPE html>
 <html>
-  <head><style>
-    body {background:black; color:purple; text-shadow:0 0 10px purple; font-size:2em; text-align:center; margin-top:20%}
-  </style></head>
-  <body>Jilano Emanual Mogria</body>
+  <head>
+    <style>
+      body {
+        background: black;
+        color: purple;
+        text-shadow: 0 0 10px purple;
+        font-size: 2em;
+        text-align: center;
+        margin-top: 5%;
+      }
+
+      .skillcheck {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        margin: 50px auto;
+        border-radius: 50%;
+        border: 5px solid purple;
+        box-shadow: 0 0 20px purple;
+      }
+
+      .zone {
+        position: absolute;
+        width: 60px;
+        height: 300px;
+        top: 0;
+        left: 120px;
+        transform-origin: bottom center;
+        background: rgba(0, 255, 0, 0.4);
+        clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+      }
+
+      .needle {
+        position: absolute;
+        width: 4px;
+        height: 150px;
+        background: red;
+        top: 0;
+        left: 148px;
+        transform-origin: bottom center;
+        box-shadow: 0 0 10px red;
+      }
+
+      #result {
+        margin-top: 20px;
+        font-size: 1.2em;
+      }
+    </style>
+  </head>
+  <body>
+    <div>Jilano Emanual Mogria</div>
+    <div class="skillcheck">
+      <div class="zone" id="zone"></div>
+      <div class="needle" id="needle"></div>
+    </div>
+    <div id="result">Press SPACE when the needle is in the green zone!</div>
+
+    <script>
+      const needle = document.getElementById("needle");
+      const zone = document.getElementById("zone");
+      const result = document.getElementById("result");
+
+      let angle = 0;
+      let speed = 4; // rotation speed
+      let zoneAngle = Math.random() * 360;
+      zone.style.transform = `rotate(${zoneAngle}deg)`;
+
+      function updateNeedle() {
+        angle = (angle + speed) % 360;
+        needle.style.transform = `rotate(${angle}deg)`;
+        requestAnimationFrame(updateNeedle);
+      }
+
+      updateNeedle();
+
+      document.body.onkeydown = (e) => {
+        if (e.code === "Space") {
+          let diff = Math.abs(((angle - zoneAngle + 360) % 360));
+          if (diff < 15 || diff > 345) {
+            result.innerHTML = "✅ Great Skillcheck!";
+          } else {
+            result.innerHTML = "❌ Failed!";
+          }
+        }
+      };
+    </script>
+  </body>
 </html>
+
