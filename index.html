@@ -5,17 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lewis Kroese Clicker</title>
 
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+        rel="stylesheet" />
 
   <style>
-    /* General Reset */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
       font-family: "Poppins", sans-serif;
       background: linear-gradient(135deg, #2a004e, #5e0b8c, #2b0055);
@@ -45,13 +38,6 @@
       text-shadow: 0 0 10px rgba(180, 0, 255, 0.6);
     }
 
-    p {
-      font-size: 1.3em;
-      font-weight: 400;
-      color: #d9c3ff;
-      margin-bottom: 15px;
-    }
-
     #clicker-img {
       width: 260px;
       height: auto;
@@ -69,12 +55,12 @@
 
     #counter {
       font-size: 2em;
-      margin: 25px 0;
+      margin: 20px 0;
       font-weight: 600;
       text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
     }
 
-    button {
+    .btn {
       background: linear-gradient(90deg, #9024e8, #c04bff);
       color: white;
       border: none;
@@ -88,7 +74,7 @@
       box-shadow: 0 0 10px rgba(150, 0, 255, 0.3);
     }
 
-    button:hover {
+    .btn:hover {
       transform: scale(1.05);
       box-shadow: 0 0 20px rgba(180, 60, 255, 0.5);
     }
@@ -104,7 +90,7 @@
     }
 
     footer {
-      margin-top: 40px;
+      margin-top: 30px;
       color: #bfa6ff;
       font-size: 0.9em;
       font-weight: 400;
@@ -120,8 +106,9 @@
 
   <div id="counter">Points: 0</div>
 
-  <button id="upgrade-btn">Buy Upgrade (Cost: 50)</button>
-  <button id="fullscreen-btn">Toggle Fullscreen</button>
+  <button id="buy-building" class="btn">Buy Building (Cost: 100)</button>
+  <button id="upgrade-click" class="btn">Upgrade Click (Cost: 500)</button>
+  <button id="fullscreen-btn" class="btn">Toggle Fullscreen</button>
 
   <footer>
     <p>diddy blud Energy</p>
@@ -129,31 +116,63 @@
 
   <script>
     let points = 0;
-    let perClick = 1;
-    let upgradeCost = 50;
+    let pointsPerClick = 1;
+    let cps = 0; // points per second
 
-    const counter = document.getElementById("counter");
-    const clicker = document.getElementById("clicker-img");
-    const upgradeBtn = document.getElementById("upgrade-btn");
+    let buildingCost = 100;
+    let buildingCount = 0;
+    let buildingCps = 5; // each building gives 5 points/sec
+
+    let clickUpgradeCost = 500;
+    let clickUpgradeLevel = 0;
+
+    const counterEl = document.getElementById("counter");
+    const clickerImg = document.getElementById("clicker-img");
+    const buyBuildingBtn = document.getElementById("buy-building");
+    const upgradeClickBtn = document.getElementById("upgrade-click");
     const fullscreenBtn = document.getElementById("fullscreen-btn");
 
-    clicker.addEventListener("click", () => {
-      points += perClick;
-      counter.textContent = `Points: ${points}`;
+    // clicking
+    clickerImg.addEventListener("click", () => {
+      points += pointsPerClick;
+      updateDisplay();
     });
 
-    upgradeBtn.addEventListener("click", () => {
-      if (points >= upgradeCost) {
-        points -= upgradeCost;
-        perClick++;
-        upgradeCost = Math.floor(upgradeCost * 1.8);
-        upgradeBtn.textContent = `Buy Upgrade (Cost: ${upgradeCost})`;
-        counter.textContent = `Points: ${points}`;
+    // buy buildings → passive income
+    buyBuildingBtn.addEventListener("click", () => {
+      if (points >= buildingCost) {
+        points -= buildingCost;
+        buildingCount++;
+        cps += buildingCps;
+        buildingCost = Math.floor(buildingCost * 1.15);
+        buyBuildingBtn.textContent = `Buy Building (Cost: ${buildingCost})`;
+        updateDisplay();
       } else {
-        alert("Not enough Lewis points!");
+        alert("Not enough points for building!");
       }
     });
 
+    // upgrade click power
+    upgradeClickBtn.addEventListener("click", () => {
+      if (points >= clickUpgradeCost) {
+        points -= clickUpgradeCost;
+        clickUpgradeLevel++;
+        pointsPerClick = pointsPerClick * 2;  // double click power
+        clickUpgradeCost = Math.floor(clickUpgradeCost * 2.5);
+        upgradeClickBtn.textContent = `Upgrade Click (Cost: ${clickUpgradeCost})`;
+        updateDisplay();
+      } else {
+        alert("Not enough points for click upgrade!");
+      }
+    });
+
+    // passive income tick
+    setInterval(() => {
+      points += cps;
+      updateDisplay();
+    }, 1000);
+
+    // fullscreen toggle
     fullscreenBtn.addEventListener("click", () => {
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen();
@@ -161,6 +180,10 @@
         document.exitFullscreen();
       }
     });
+
+    function updateDisplay() {
+      counterEl.textContent = `Points: ${points} (CPS: ${cps})`;
+    }
   </script>
 </body>
 </html>
