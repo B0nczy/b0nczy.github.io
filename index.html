@@ -1,86 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lewis Kroesen Clicker</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lewis Kroese Clicker</title>
 
-  <!-- Import a new font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
 
   <style>
+    /* General Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #a82be2, #4e0155);
+      background: linear-gradient(135deg, #2a004e, #5e0b8c, #2b0055);
+      background-size: 400% 400%;
+      animation: gradientShift 10s ease infinite;
       color: #f0f0f0;
       text-align: center;
-      padding: 20px;
+      padding: 40px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     h1 {
-      font-size: 2.8em;
+      font-size: 3em;
       margin-bottom: 0.2em;
       font-weight: 700;
+      text-shadow: 0 0 10px rgba(180, 0, 255, 0.6);
     }
 
     p {
-      font-size: 1.2em;
+      font-size: 1.3em;
       font-weight: 400;
+      color: #d9c3ff;
+      margin-bottom: 15px;
     }
 
     #clicker-img {
       width: 260px;
       height: auto;
       cursor: pointer;
-      transition: transform 0.1s ease;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-      margin-top: 15px;
+      transition: transform 0.1s ease, box-shadow 0.3s ease;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(160, 50, 255, 0.5);
+      margin-top: 20px;
     }
 
     #clicker-img:active {
       transform: scale(0.9);
+      box-shadow: 0 0 40px rgba(200, 100, 255, 0.8);
     }
 
     #counter {
       font-size: 2em;
-      margin: 20px 0;
+      margin: 25px 0;
       font-weight: 600;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
     }
 
-    #upgrade-btn {
-      background-color: #ff5c5c;
+    button {
+      background: linear-gradient(90deg, #9024e8, #c04bff);
       color: white;
       border: none;
-      padding: 10px 25px;
-      font-size: 1.2em;
+      padding: 12px 30px;
+      font-size: 1.1em;
+      font-weight: 600;
       cursor: pointer;
-      border-radius: 8px;
-      transition: background-color 0.2s, transform 0.1s;
+      border-radius: 10px;
+      margin: 10px;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 10px rgba(150, 0, 255, 0.3);
     }
 
-    #upgrade-btn:hover {
-      background-color: #ff2b2b;
+    button:hover {
       transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(180, 60, 255, 0.5);
+    }
+
+    #fullscreen-btn {
+      background: linear-gradient(90deg, #3a006e, #6a00a5);
+      font-size: 0.9em;
+      opacity: 0.8;
+    }
+
+    #fullscreen-btn:hover {
+      opacity: 1;
     }
 
     footer {
-      margin-top: 30px;
-      color: #ddd;
+      margin-top: 40px;
+      color: #bfa6ff;
       font-size: 0.9em;
       font-weight: 400;
+      text-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
     }
   </style>
 </head>
 <body>
-  <h1>Lewis Kroesen Clicker</h1>
+  <h1>Lewis Kroese Clicker</h1>
   <p>Click Lewis to gain points!</p>
 
-  <img id="clicker-img" src="brainrot.png" alt="Lewis Kroesen">
+  <img id="clicker-img" src="brainrot.png" alt="Lewis Kroese">
 
   <div id="counter">Points: 0</div>
 
   <button id="upgrade-btn">Buy Upgrade (Cost: 50)</button>
+  <button id="fullscreen-btn">Toggle Fullscreen</button>
 
   <footer>
     <p>diddy blud Energy</p>
@@ -91,24 +132,33 @@
     let perClick = 1;
     let upgradeCost = 50;
 
-    const counter = document.getElementById('counter');
-    const clicker = document.getElementById('clicker-img');
-    const upgradeBtn = document.getElementById('upgrade-btn');
+    const counter = document.getElementById("counter");
+    const clicker = document.getElementById("clicker-img");
+    const upgradeBtn = document.getElementById("upgrade-btn");
+    const fullscreenBtn = document.getElementById("fullscreen-btn");
 
-    clicker.addEventListener('click', () => {
+    clicker.addEventListener("click", () => {
       points += perClick;
       counter.textContent = `Points: ${points}`;
     });
 
-    upgradeBtn.addEventListener('click', () => {
+    upgradeBtn.addEventListener("click", () => {
       if (points >= upgradeCost) {
         points -= upgradeCost;
         perClick++;
         upgradeCost = Math.floor(upgradeCost * 1.8);
         upgradeBtn.textContent = `Buy Upgrade (Cost: ${upgradeCost})`;
-        counter.textContent = `Lewis Points: ${points}`;
+        counter.textContent = `Points: ${points}`;
       } else {
         alert("Not enough Lewis points!");
+      }
+    });
+
+    fullscreenBtn.addEventListener("click", () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
       }
     });
   </script>
