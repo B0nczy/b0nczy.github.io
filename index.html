@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lewis Kroese Clicker</title>
+  <title>kinda homeless clicker</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
         rel="stylesheet" />
@@ -99,19 +99,19 @@
   </style>
 </head>
 <body>
-  <h1>Lewis Kroese Clicker</h1>
-  <p>Click Lewis to gain points!</p>
+  <h1>kinda homeless clicker</h1>
+  <p>Click speed to gain points!</p>
 
   <img id="clicker-img" src="brainrot.png" alt="Lewis Kroese">
 
   <div id="counter">Points: 0</div>
 
-  <button id="buy-building" class="btn">Buy Building (Cost: 100)</button>
+  <button id="buy-building" class="btn">get a job (Cost: 100000)</button>
   <button id="upgrade-click" class="btn">Upgrade Click (Cost: 500)</button>
   <button id="fullscreen-btn" class="btn">Toggle Fullscreen</button>
 
   <footer>
-    <p>diddy blud Energy</p>
+    <p>homeless Energy</p>
   </footer>
 
   <script>
@@ -145,10 +145,10 @@
         buildingCount++;
         cps += buildingCps;
         buildingCost = Math.floor(buildingCost * 1.15);
-        buyBuildingBtn.textContent = `Buy Building (Cost: ${buildingCost})`;
+        buyBuildingBtn.textContent = `get a job (Cost: ${buildingCost})`;
         updateDisplay();
       } else {
-        alert("Not enough points for building!");
+        alert("Not enough points for a job!");
       }
     });
 
@@ -187,3 +187,4 @@
   </script>
 </body>
 </html>
+
