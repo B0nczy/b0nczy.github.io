@@ -1,190 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kinda homeless clicker</title>
+<meta charset="UTF-8" />
+<title>Test</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-        rel="stylesheet" />
-
-  <style>
+<style>
     body {
-      font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #2a004e, #5e0b8c, #2b0055);
-      background-size: 400% 400%;
-      animation: gradientShift 10s ease infinite;
-      color: #f0f0f0;
-      text-align: center;
-      padding: 40px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
+        margin: 0;
+        height: 100vh;
+
+        /* blauwe basis kleur */
+        background-color: #00AEEF;
+
+        /* paarse lijnen */
+        background-image: repeating-linear-gradient(
+            -30deg,
+            #5A33CC 0px,
+            #5A33CC 20px,
+            transparent 20px,
+            transparent 60px
+        );
     }
 
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    p {
+        font-size: 24px;
+        color: white;
+        padding: 20px;
     }
-
-    h1 {
-      font-size: 3em;
-      margin-bottom: 0.2em;
-      font-weight: 700;
-      text-shadow: 0 0 10px rgba(180, 0, 255, 0.6);
-    }
-
-    #clicker-img {
-      width: 260px;
-      height: auto;
-      cursor: pointer;
-      transition: transform 0.1s ease, box-shadow 0.3s ease;
-      border-radius: 12px;
-      box-shadow: 0 0 25px rgba(160, 50, 255, 0.5);
-      margin-top: 20px;
-    }
-
-    #clicker-img:active {
-      transform: scale(0.9);
-      box-shadow: 0 0 40px rgba(200, 100, 255, 0.8);
-    }
-
-    #counter {
-      font-size: 2em;
-      margin: 20px 0;
-      font-weight: 600;
-      text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
-    }
-
-    .btn {
-      background: linear-gradient(90deg, #9024e8, #c04bff);
-      color: white;
-      border: none;
-      padding: 12px 30px;
-      font-size: 1.1em;
-      font-weight: 600;
-      cursor: pointer;
-      border-radius: 10px;
-      margin: 10px;
-      transition: all 0.2s ease;
-      box-shadow: 0 0 10px rgba(150, 0, 255, 0.3);
-    }
-
-    .btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(180, 60, 255, 0.5);
-    }
-
-    #fullscreen-btn {
-      background: linear-gradient(90deg, #3a006e, #6a00a5);
-      font-size: 0.9em;
-      opacity: 0.8;
-    }
-
-    #fullscreen-btn:hover {
-      opacity: 1;
-    }
-
-    footer {
-      margin-top: 30px;
-      color: #bfa6ff;
-      font-size: 0.9em;
-      font-weight: 400;
-      text-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <h1>kinda homeless clicker</h1>
-  <p>Click speed to gain points!</p>
-
-  <img id="clicker-img" src="brainrot.png" alt="Lewis Kroese">
-
-  <div id="counter">Points: 0</div>
-
-  <button id="buy-building" class="btn">get a job (Cost: 100000)</button>
-  <button id="upgrade-click" class="btn">Upgrade Click (Cost: 500)</button>
-  <button id="fullscreen-btn" class="btn">Toggle Fullscreen</button>
-
-  <footer>
-    <p>homeless Energy</p>
-  </footer>
-
-  <script>
-    let points = 0;
-    let pointsPerClick = 1;
-    let cps = 0; // points per second
-
-    let buildingCost = 100;
-    let buildingCount = 0;
-    let buildingCps = 5; // each building gives 5 points/sec
-
-    let clickUpgradeCost = 500;
-    let clickUpgradeLevel = 0;
-
-    const counterEl = document.getElementById("counter");
-    const clickerImg = document.getElementById("clicker-img");
-    const buyBuildingBtn = document.getElementById("buy-building");
-    const upgradeClickBtn = document.getElementById("upgrade-click");
-    const fullscreenBtn = document.getElementById("fullscreen-btn");
-
-    // clicking
-    clickerImg.addEventListener("click", () => {
-      points += pointsPerClick;
-      updateDisplay();
-    });
-
-    // buy buildings → passive income
-    buyBuildingBtn.addEventListener("click", () => {
-      if (points >= buildingCost) {
-        points -= buildingCost;
-        buildingCount++;
-        cps += buildingCps;
-        buildingCost = Math.floor(buildingCost * 1.15);
-        buyBuildingBtn.textContent = `get a job (Cost: ${buildingCost})`;
-        updateDisplay();
-      } else {
-        alert("Not enough points for a job!");
-      }
-    });
-
-    // upgrade click power
-    upgradeClickBtn.addEventListener("click", () => {
-      if (points >= clickUpgradeCost) {
-        points -= clickUpgradeCost;
-        clickUpgradeLevel++;
-        pointsPerClick = pointsPerClick * 2;  // double click power
-        clickUpgradeCost = Math.floor(clickUpgradeCost * 2.5);
-        upgradeClickBtn.textContent = `Upgrade Click (Cost: ${clickUpgradeCost})`;
-        updateDisplay();
-      } else {
-        alert("Not enough points for click upgrade!");
-      }
-    });
-
-    // passive income tick
-    setInterval(() => {
-      points += cps;
-      updateDisplay();
-    }, 1000);
-
-    // fullscreen toggle
-    fullscreenBtn.addEventListener("click", () => {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
-    });
-
-    function updateDisplay() {
-      counterEl.textContent = `Points: ${points} (CPS: ${cps})`;
-    }
-  </script>
+    <p>achter grond test</p>
+    <font>w chat</font>
+    <p>test</p>
 </body>
 </html>
+<style>
+  .center-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
 
+<img src="teapot.png" alt="Teapot" width="300" height="200" class="center-img">
